@@ -21,6 +21,9 @@ class TestMeUITests: XCTestCase {
 
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+        
+        let app = XCUIApplication()
+        app.buttons["Reset"].tap()
     }
 
     func testExample() {
@@ -39,5 +42,57 @@ class TestMeUITests: XCTestCase {
                 XCUIApplication().launch()
             }
         }
+    }
+    
+    func testFakeLabelWillFail() {
+        
+        //setup
+        let app = XCUIApplication()
+        app.launch()
+        
+        //create test that will absolutely fail first
+        XCTAssert(!app.staticTexts["This text does not exist in the app"].exists)
+    }
+    
+    func testExistsHelloWorldLabel() {
+        
+        //setup
+        let app = XCUIApplication()
+        app.launch()
+        
+        //assert label exists
+        XCTAssert(app.staticTexts["Hello, World!"].exists)
+    }
+    
+    func testScrambleButton() {
+        
+        //setup
+        let app = XCUIApplication()
+        app.launch()
+        
+        //assert screen is reset
+        XCTAssert(app.staticTexts["Hello, World!"].exists)
+        
+        //scramble
+        app.buttons["Scramble"].tap()
+        XCTAssert(!app.staticTexts["Hello, World!"].exists)
+    }
+    
+    func testResetButton() {
+        
+        //setup
+        let app = XCUIApplication()
+        app.launch()
+        
+        //assert screen is reset
+        XCTAssert(app.staticTexts["Hello, World!"].exists)
+        
+        //scramble
+        app.buttons["Scramble"].tap()
+        XCTAssert(!app.staticTexts["Hello, World!"].exists)
+        
+        //reset
+        app.buttons["Reset"].tap()
+        XCTAssert(app.staticTexts["Hello, World!"].exists)
     }
 }
